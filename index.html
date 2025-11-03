@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript DOM Lab - 40 Exercises</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .highlight { background-color: yellow; }
+    .active { border: 2px solid red; }
+    .card { border: 1px solid #ccc; padding: 10px; margin: 5px; border-radius: 8px; }
+    .highlighted { background-color: lightyellow; }
+    button { margin: 5px; padding: 8px 12px; cursor: pointer; }
+    input { padding: 8px; margin: 5px; }
+  </style>
+</head>
+<body>
+  <h1 id="title">DOM Practice Lab</h1>
+  <h2>Sample Subheading</h2>
+  
+  <p>This is paragraph one.</p>
+  <p class="highlight">This is paragraph two with highlight class.</p>
+  <p>This is paragraph three.</p>
+  <div id="container">
+    <p>Inside a div container</p>
+  </div>
+  <ul id="list">
+    <li>List Item 1</li>
+    <li>List Item 2</li>
+    <li>List Item 3</li>
+  </ul>
+  <img id="sampleImage" src="https://placehold.co/100x100" alt="Sample">
+  <div id="output" style="padding: 10px; background: #f0f0f0; margin: 10px 0;"></div>
+  <button id="mainButton">Click Me</button>
+  <input type="text" id="userInput" placeholder="Type something">
+  <button id="displayButton">Display Text</button>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ========================================================
+  // PART 1: Selecting and Styling Elements (1–10)
+  // ========================================================
+  const title = document.getElementById("title");
+  title.textContent = "Welcome to the DOM Lab!";
+  title.style.color = "red";
+  title.style.fontSize = "36px";
+
+  const allPs = document.querySelectorAll("p");
+  allPs.forEach(p => {
+      p.style.backgroundColor = "lightgray";
+      p.style.fontFamily = "Arial";
+  });
+
+  document.querySelectorAll(".highlight").forEach(el => {
+      el.style.color = "blue";
+      el.style.fontWeight = "bold";
+  });
+
+  const allDivs = document.querySelectorAll("div");
+  allDivs.forEach(div => div.style.border = "2px solid black");
+  if(allDivs[0]) allDivs[0].classList.add("active");
+
+  document.body.style.backgroundColor = "lightblue";
+  const sampleImage = document.getElementById("sampleImage");
+  sampleImage.src = "https://placehold.co/150x150";
+
+  // ========================================================
+  // PART 2: Creating and Appending Elements (11–20)
+  // ========================================================
+  const pNew = document.createElement("p");
+  pNew.textContent = "This is a new paragraph.";
+  document.body.appendChild(pNew);
+
+  const ul = document.getElementById("list");
+  const liNew = document.createElement("li");
+  liNew.textContent = "New List Item";
+  ul.appendChild(liNew);
+
+  const btnDiv = document.createElement("button");
+  btnDiv.textContent = "Click Me!";
+  document.getElementById("container").appendChild(btnDiv);
+
+  const h2New = document.createElement("h2");
+  h2New.textContent = "Dynamic H2";
+  document.body.insertBefore(h2New, document.querySelector("p"));
+
+  const imgNew = document.createElement("img");
+  imgNew.src = "https://placehold.co/80x80";
+  imgNew.width = 80;
+  imgNew.height = 80;
+  document.body.appendChild(imgNew);
+
+  for(let i=1;i<=3;i++){
+      const li = document.createElement("li");
+      li.textContent = `Loop Item ${i}`;
+      ul.appendChild(li);
+  }
+
+  const cardDiv = document.createElement("div");
+  cardDiv.className = "card";
+  cardDiv.textContent = "This is a card div.";
+  document.body.appendChild(cardDiv);
+
+  const nameP = document.createElement("p");
+  nameP.textContent = "Shawket Foudeh";
+  document.body.appendChild(nameP);
+
+  document.querySelectorAll("p").forEach(p=>{
+      const span = document.createElement("span");
+      span.textContent = " [Edited]";
+      p.appendChild(span);
+  });
+
+  if(ul.lastElementChild) ul.removeChild(ul.lastElementChild);
+
+  // ========================================================
+  // PART 3: Event Handling (21–30)
+  // ========================================================
+
+  btnDiv.addEventListener("click", ()=> alert("Button in div clicked!"));
+
+  const containerDiv = document.getElementById("container");
+  containerDiv.addEventListener("click", function(){
+      this.style.backgroundColor = "lightgreen";
+  });
+
+  document.body.addEventListener("mouseenter", e=>{
+      if(e.target.tagName === "P") e.target.style.fontWeight = "bold";
+  }, true);
+
+  document.body.addEventListener("mouseleave", e=>{
+      if(e.target.tagName === "P") e.target.style.fontWeight = "normal";
+  }, true);
+
+  const hideBtn = document.createElement("button");
+  hideBtn.textContent = "Hide Image";
+  document.body.appendChild(hideBtn);
+  hideBtn.addEventListener("click", ()=> sampleImage.style.display = "none");
+
+  const showBtn = document.createElement("button");
+  showBtn.textContent = "Show Image";
+  document.body.appendChild(showBtn);
+  showBtn.addEventListener("click", ()=> sampleImage.style.display = "block");
+
+  let count = 0;
+  const counterBtn = document.createElement("button");
+  counterBtn.textContent = "Counter: 0";
+  document.body.appendChild(counterBtn);
+  counterBtn.addEventListener("click", ()=>{
+      count++;
+      counterBtn.textContent = `Counter: ${count}`;
+  });
+
+  const displayButton = document.getElementById("displayButton");
+  displayButton.addEventListener("click", ()=>{
+      const input = document.getElementById("userInput").value;
+      document.getElementById("output").textContent = `You typed: ${input}`;
+  });
+
+  const randomBtn = document.createElement("button");
+  randomBtn.textContent = "Random BG Color";
+  document.body.appendChild(randomBtn);
+  randomBtn.addEventListener("click", ()=>{
+      const colors = ["#ff9999","#99ff99","#9999ff","#ffff99","#ff99ff"];
+      document.body.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+  });
+
+  document.addEventListener("keydown", (e)=>{
+      document.getElementById("output").textContent = `Key Pressed: ${e.key}`;
+  });
+
+  // ========================================================
+  // PART 4: Modifying and Traversing DOM (31–40)
+  // ========================================================
+
+  if(ul.firstElementChild) ul.firstElementChild.textContent = "First Item Changed";
+
+  alert(`Number of paragraphs: ${document.querySelectorAll("p").length}`);
+
+  document.querySelectorAll("p").forEach(p=> p.remove());
+
+  const oldH2 = document.querySelector("h2");
+  const newH2 = document.createElement("h2");
+  newH2.textContent = "Replaced H2";
+  oldH2.replaceWith(newH2);
+
+  document.querySelectorAll("li").forEach(li=> li.classList.add("highlighted"));
+
+  const toggleCard = el => el.classList.toggle("active");
+  cardDiv.addEventListener("click", ()=> toggleCard(cardDiv));
+
+  const clone = cardDiv.cloneNode(true);
+  clone.addEventListener("click", ()=> toggleCard(clone));
+  document.body.appendChild(clone);
+
+  const scrollBtn = document.createElement("button");
+  scrollBtn.textContent = "Scroll to Bottom";
+  document.body.appendChild(scrollBtn);
+  scrollBtn.addEventListener("click", ()=> window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"}));
+
+  const fruits = ["Apple","Banana","Cherry"];
+  const dynamicUl = document.createElement("ul");
+  dynamicUl.innerHTML = fruits.map(f=> `<li>${f}</li>`).join("");
+  document.body.appendChild(dynamicUl);
+
+});
+  </script>
+</body>
+</html>
